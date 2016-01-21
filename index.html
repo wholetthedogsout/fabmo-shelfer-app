@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shopbot Eggcrater App</title>
+    <link href="css/crater.css" rel="stylesheet">
+  </head>
+<body>
+
+<div id="viewport"></div>
+<fieldset>
+  <legend>Crater Size</legend>
+  <!-- Vertical-Count -->
+  <label>Row Dividers</label>
+  <select id="rows">
+    <option value="4">3
+    <option value="5" selected="">4
+    <option value="6">5
+    <option value="7">6
+    <option value="8">7
+    <option value="9">8
+    <option value="10">9
+    <option value="11">10
+  </select>
+  <br>
+  <!-- Horizonal-Count -->
+  <label>Column Dividers</label>
+  <select id="columns">
+    <option value="4">3
+    <option value="5" selected="">4
+    <option value="6">5
+    <option value="7">6
+    <option value="8">7
+    <option value="9">8
+    <option value="10">9
+    <option value="11">10
+  </select>
+  <br>
+  <input type="hidden" name="Horizonal-Count" id="Horizonal-Count">
+  <input type="hidden" name="Vertical-Count" id="Vertical-Count"> 
+  <label>Overhang length</label>
+  <input id="overhang_length" type="text" value="2" test="required:true, minValue:0">
+  <br>
+  <fieldset>
+    <legend>Size by</legend>
+    <label><input type="radio" name="size_by" id="fixed_size" value="fixed_size" checked="">Fixed Size</label>
+    <label><input type="radio" name="size_by" id="spacing" value="spacing">Divider Spacing</label>
+  </fieldset>
+  <fieldset id="fixed_size_values" class="size" style="display:block">
+    <legend>Fixed Size</legend>
+    <label>Width</label>
+    <input id="fixed_size_width" type="text" value="36" test="required:true, minValue:0"><br>
+    <label>Height</label>
+    <input id="fixed_size_height" type="text" value="24" test="required:true, minValue:0"><br>
+  </fieldset>
+  <fieldset id="spacing_values" class="size" style="display:none">
+    <legend>Divider Spacing</legend>
+    <label>Width</label>
+    <input id="spacing_width" type="text" value="6" test="required:true, minValue:0"><br>
+    <label>Heigth</label>
+    <input id="spacing_height" type="text" value="10" test="required:true, minValue:0"><br>
+  </fieldset>
+  <input type="button" id="update_spacing" value="Update">
+</fieldset>
+<fieldset id="moving_elements">
+  <p class="info">
+    To resize your crater either click the cell that you want the change or drag the lines.
+  </p>
+  <legend>Customize Crater</legend>
+  <label style="color:red">Row Width</label><input id="moving_row_width" type="text" test="minValue:0"><br>
+  <label style="color:red">Column Height</label><input id="moving_column_height" type="text" test="minValue:0"><br>
+  <label style="color:blue">Row Width</label><input id="collateral_row_width" type="text" test="minValue:0"><br>
+  <label style="color:blue">Column Height</label><input id="collateral_column_height" type="text" test="minValue:0"><br>
+  <input type="button" id="update_crater" value="Update">
+  <input type="hidden" id="Horizonal-Notches" name="Horizonal-Notches">
+  <input type="hidden" id="Vertical-Notches" name="Vertical-Notches">
+  
+</fieldset>
+<fieldset>
+  <legend>Cutting Settings</legend>
+  <label>Material Thickness</label>
+  <input id="mat_thickness" name="OverAllThickness" type="text" value=".5">
+  <br>
+  <label>Divider Depth</label>
+  <input id="divider_depth" name="Depth" type="text" value="6">
+  <br>
+   <label>Bit Diameter</label>
+  <input id="bit_dia" name="BitSize" type="text" value=".25">
+  <br>
+</fieldset>
+
+ <!-- Dependencies -->
+<script type="text/javascript"  src="js/jquery.min.js"></script>
+<script type="text/javascript"  src="js/three.min.js"></script> 
+<script src="js/OrbitControls.js"></script>
+
+<script> 
+        var container = $('#viewport');
+        var element = null;
+        var height = $('#fixed_size_height').val();
+        var width = $('#fixed_size_width').val();
+        var xStart = (-height/2);
+        var yStart = (-width/2);
+        var verticalDivs = $('#rows').val();
+        var horizontalDivs = $('#columns').val();
+        var thickness = $('#mat_thickness').val();
+        var depth = $('#divider_depth').val();
+        var scenePos = (height + (height*0.1));
+        var xIncrease = (width/verticalDivs);
+        var yIncrease = (height/horizontalDivs);
+        console.log(xIncrease);
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera( 75, container.width() / container.height(), 0.1, 1000 );
+        camera.position.z = scenePos;
+        var renderer = new THREE.WebGLRenderer({antialias: true});
+
+        renderer.setSize( container.width(), container.height() );
+        container.append( renderer.domElement );
+        renderer.setClearColor( 0xffffff, 1 );
+       // Lights
+
+        light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( 0, 0, 1 );
+				scene.add( light );
+        
+        var verticle = new THREE.BoxGeometry( thickness, height, depth)
+        var horizantal = new THREE.BoxGeometry(width, thickness, depth )
+        var material = new THREE.MeshNormalMaterial( { color: 0xb28601 } );
+       
+       for (var i=0; i<horizontalDivs; i++) {
+        cube = new THREE.Mesh( horizantal, material );
+        cube.position.y = yStart;
+        scene.add( cube );
+        yStart+=yIncrease;
+       }
+       
+        for (var i=0; i<verticalDivs; i++) {
+        cube = new THREE.Mesh( verticle, material );
+        cube.position.x = xStart;
+        scene.add( cube );
+        xStart+=xIncrease;
+       }
+
+
+        
+ 
+			
+
+				//
+
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
+        controls.addEventListener( 'change', render );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+      
+      function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+      
+      function animate() {
+				requestAnimationFrame( animate );
+				controls.update();
+				render();
+			}
+
+        function render() {
+          renderer.render( scene, camera );
+        }
+render();
+ </script>
+ </body>
+</html>

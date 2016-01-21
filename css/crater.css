@@ -1,0 +1,26 @@
+#myCanvas span {height:100%;display:block;float:left;overflow:hidden}
+#myCanvas {width : 500px ; height : 500px;}
+#myCanvas div.row {background: url("../images/woodtex.JPG") repeat-x bottom left ;clear:left;overflow:hidden}
+#myCanvas  span {background: url("../images/woodtex.JPG") repeat-y top right;}
+#myCanvas  span.end {background:none;}
+
+#myCanvas div.bottom {background:none;}
+#myCanvas  div.collateral {background: url("../images/woodtex_blue_wood.JPG") repeat-x bottom left ;clear:left;overflow:hidden }
+#myCanvas  div.moving_top {background: url("../images/woodtex_wood_red.JPG") repeat-x bottom left ;clear:left;overflow:hidden}
+#myCanvas  div.moving {background: url("../images/woodtex_red_blue.JPG") repeat-x bottom left ;clear:left;overflow:hidden}
+#myCanvas  span.moving {background: url("../images/woodtex_red_blue_ver.JPG") repeat-y top right}
+#myCanvas  span.collateral {background: url("../images/woodtex_blue_wood_ver.JPG") repeat-y top right}
+#myCanvas  span.moving_side {background: url("../images/woodtex_wood_red_ver.JPG") repeat-y top right}
+#myCanvas  .hide {display:none}
+#myCanvas span.disputed_row{}
+#myCanvas span.disputed_column{}
+.proxy { border:dashed 1px black;}
+tr { height:100px ;border:5px solid black;}
+td { width : 100px;border-right:5px solid black;}
+table { height:500px; width:500px;}
+#viewport {
+    background-color: #ffffff;
+    width: 100%;
+    height: 300px;
+    border: 1px solid lightgray;
+}
