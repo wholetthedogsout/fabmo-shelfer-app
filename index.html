@@ -101,13 +101,13 @@
         var element = null;
         var height = $('#fixed_size_height').val();
         var width = $('#fixed_size_width').val();
-        var xStart = (-height/2);
-        var yStart = (-width/2);
+        var xStart = (-width/2);
+        var yStart = (-height/2);
         var verticalDivs = $('#rows').val();
         var horizontalDivs = $('#columns').val();
         var thickness = $('#mat_thickness').val();
         var depth = $('#divider_depth').val();
-        var scenePos = (height + (height*0.1));
+        var scenePos = (height);
         var xIncrease = (width/verticalDivs);
         var yIncrease = (height/horizontalDivs);
         console.log(xIncrease);
@@ -122,23 +122,28 @@
        // Lights
 
         light = new THREE.DirectionalLight( 0xffffff );
-				light.position.set( 0, 0, 1 );
+				light.position.set( .5, .6, 1 );
 				scene.add( light );
+        
+        // ambient light
+	      var ambientLight = new THREE.AmbientLight(0x404040);
+	      scene.add( ambientLight );
+
         
         var verticle = new THREE.BoxGeometry(thickness, height, depth)
         var horizantal = new THREE.BoxGeometry(width, thickness, depth )
-        var material = new THREE.MeshNormalMaterial( { color: 0xb28601 } );
+        var material = new THREE.MeshLambertMaterial( { color: 0xb28601 } );
        
-       for (var i=0; i<horizontalDivs; i++) {
+       for (var i=0; i<=horizontalDivs; i++) {
         cube = new THREE.Mesh( horizantal, material );
-        cube.position.y = yStart;
+        cube.position.setY(yStart);
         scene.add( cube );
         yStart+=yIncrease;
        }
        
-        for (var i=0; i<verticalDivs; i++) {
+        for (var i=0; i<=verticalDivs; i++) {
         cube = new THREE.Mesh( verticle, material );
-        cube.position.x = xStart;
+        cube.position.setX(xStart);
         scene.add( cube );
         xStart+=xIncrease;
        }
